@@ -1,13 +1,14 @@
 import telebot
 from keyboards import (create_consent_keyboard,
-                       create_back_buttom, create_first_keyboard_user)
+                       create_back_buttom, create_first_keyboard_user,
+                       create_second_keyboard_user)
 
 
 def read_price():
-    with open('price', 'r', encoding='utf-8') as file:
+    with open('price.txt', 'r', encoding='utf-8') as file:
         return file.read()
     
-    
+
 def hendle_start(bot: telebot.TeleBot):
     @bot.message_handler(commands=['start'])
     def send_welcome(message):
@@ -31,11 +32,15 @@ def handle_callbacks(bot: telebot.TeleBot):
             bot.send_message(call.message.chat.id,
                              "Вы не приняли соглашение. Для продолжения работы с ботом необходимо дать согласие.")
         
-
-def handle_messages(bot: telebot.Telebot):
-    @bot.message_handler(func=lambda message:True)
+        
+def handle_messages(bot: telebot.TeleBot):
+    @bot.message_handler(func=lambda message: True)
     def handler_message(message):
-        if message.text == 'Прайс':
-
+        if message.text == 'Заказать бокс для вещей':
+            bot.send_message(message.chat.id,
+                             'Спасибо, что выбрали нас.',
+                             reply_markup=create_second_keyboard_user())
+        elif message.text == 'Прайс':
+            bot.send_message(message.chat.id, read_price())
 
 

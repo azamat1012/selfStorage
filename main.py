@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
 import telebot
-from hendler import hendle_start, handle_callbacks
+from hendler import hendle_start, handle_callbacks, handle_messages
 
 
 def main():
@@ -11,7 +11,8 @@ def main():
     bot = telebot.TeleBot(token_tg)
 
     hendle_start(bot)
-    handle_callbacks(bot) 
+    handle_callbacks(bot)
+    handle_messages(bot) 
 
     bot.polling()
 
