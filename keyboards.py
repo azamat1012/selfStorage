@@ -9,7 +9,7 @@ def create_consent_keyboard():
     keyboard = telebot.types.InlineKeyboardMarkup()
     accept_buttom = telebot.types.InlineKeyboardButton(
         "Принять",
-        callback_data='aacept'
+        callback_data='accept'
         )
     reject_buttom = telebot.types.InlineKeyboardButton(
         "Отклонить",
@@ -19,9 +19,19 @@ def create_consent_keyboard():
     return keyboard
 
 
-def create_first_keybords():
+def create_first_keyboard_user():
     keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
-    button_1 = telebot.types.KeyboardButton("Я хочу заказать у вас бокс для вещей.")
+    button_1 = telebot.types.KeyboardButton("Заказать бокс для вещей.")
     button_2 = telebot.types.KeyboardButton("Я владелец.")
 
     keyboard.row(button_1, button_2)
+    return keyboard
+
+
+def create_second_keyboard_user():
+    keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
+    button_3 = telebot.types.KeyboardButton('Прайс')
+    button_4 = telebot.types.KeyboardButton('Оформить заказ.')
+    button_5 = telebot.types.KeyboardButton('Мои заказы.')
+    buttom_6 = telebot.types.KeyboardButton('Правила хранения.')
+
