@@ -14,3 +14,14 @@ def heandle_start(bot: telebot.TeleBot):
                         )
 
 
+# Обработчик нажатий  инлайн-кнопки
+def handle_callbacks(bot: telebot.TeleBot):
+    @bot.callback_query_handler(func=lambda call: True)
+    def handle_callback(call):
+        if call.data == 'accept':
+            bot.send_message(call.message.chat.id, "Спасибо! Вы приняли соглашение. Теперь вы можете продолжить.",
+                             reply_markup=create_first_keyboard())
+        elif call.data == 'reject':
+            bot.send_message(call.message.chat.id,
+                             "Вы не приняли соглашение. Для продолжения работы с ботом необходимо дать согласие.")
+
