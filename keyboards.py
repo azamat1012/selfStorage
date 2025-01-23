@@ -33,5 +33,10 @@ def create_second_keyboard_user():
     button_3 = telebot.types.KeyboardButton('Прайс')
     button_4 = telebot.types.KeyboardButton('Оформить заказ.')
     button_5 = telebot.types.KeyboardButton('Мои заказы.')
-    buttom_6 = telebot.types.KeyboardButton('Правила хранения.')
+    button_6 = telebot.types.KeyboardButton('Правила хранения.')
+    back_botton = create_back_buttom
+    keyboard.row(button_3, button_6)
+    keyboard.row(button_4, button_5)
+    keyboard.row(back_botton)
 
+    return keyboard
