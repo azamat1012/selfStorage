@@ -1,6 +1,10 @@
 import telebot
 
 
+def create_back_buttom():
+    return telebot.types.KeyboardButton('Назад')
+
+
 def create_consent_keyboard():
     keyboard = telebot.types.InlineKeyboardMarkup()
     accept_buttom = telebot.types.InlineKeyboardButton(
