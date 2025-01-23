@@ -9,6 +9,11 @@ def read_price():
         return file.read()
     
 
+def read_rules():
+    with open('storage_rules.txt', 'r', encoding='utf-8') as file:
+        return file.read()
+    
+
 def hendle_start(bot: telebot.TeleBot):
     @bot.message_handler(commands=['start'])
     def send_welcome(message):
@@ -42,5 +47,12 @@ def handle_messages(bot: telebot.TeleBot):
                              reply_markup=create_second_keyboard_user())
         elif message.text == 'Прайс':
             bot.send_message(message.chat.id, read_price())
+        elif message.text == 'Назад':
+            bot.send_message(message.chat.id,
+                             'Возвращаемся в Главное меню',
+                             reply_markup=create_first_keyboard_user())
+        elif message.text == 'Правила хранения':
+            bot.send_message(message.chat.id, read_rules())
+        
 
 
