@@ -1,7 +1,7 @@
 import telebot
 from keyboards import (create_consent_keyboard,
-                       create_back_buttom, create_first_keyboard_user,
-                       create_second_keyboard_user)
+                       create_first_keyboard_user,
+                       create_second_keyboard_user, create_my_order_keyboard)
 
 
 def read_price():
@@ -53,6 +53,10 @@ def handle_messages(bot: telebot.TeleBot):
                              reply_markup=create_first_keyboard_user())
         elif message.text == 'Правила хранения':
             bot.send_message(message.chat.id, read_rules())
+        elif message.text == 'Мои заказы':
+            bot.send_message(message.chat.id,
+                             'Выберите действие',
+                             reply_markup=create_my_order_keyboard())
         
 
 
