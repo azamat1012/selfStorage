@@ -1,7 +1,10 @@
 import telebot
-from keyboards import (create_consent_keyboard,
-                       create_first_keyboard_user,
-                       create_second_keyboard_user, create_my_order_keyboard)
+from inline_keyboards import (create_consent_keyboard,
+                              create_my_order_keyboard,
+                              create_box_info_keyboards)
+
+from standart_keyboards import (create_first_keyboard_user,
+                                create_second_keyboard_user,)
 
 
 def read_price():
@@ -36,7 +39,19 @@ def handle_callbacks(bot: telebot.TeleBot):
         elif call.data == 'reject':
             bot.send_message(call.message.chat.id,
                              "Вы не приняли соглашение. Для продолжения работы с ботом необходимо дать согласие.")
-        
+        elif call.data == 'info_about_box':
+            bot.edit_message_reply_markup(
+                chat_id=call.message.chat.id,
+                message_id=call.message.message_id,
+                reply_markup=create_box_info_keyboards()
+            )
+        elif call.data == 'box_name':
+            bot.send_message(call.message.chat.id,
+                            'Название вашего бокса: ...')
+        elif call.data == 'storage_period':
+            bot.send_message(call.message.chat.id, 
+                            'Период хранения: 30 дней')
+            
         
 def handle_messages(bot: telebot.TeleBot):
     @bot.message_handler(func=lambda message: True)
