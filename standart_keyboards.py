@@ -27,7 +27,7 @@ def create_second_keyboard_user():
 
     return keyboard
 
-    
+
 def create_third_keyboard_user():
     keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
     button_7 = telebot.types.KeyboardButton('Посмотреть доступные боксы')
@@ -36,3 +36,16 @@ def create_third_keyboard_user():
     keyboard.row(back_botton)
 
     return keyboard
+
+
+def create_fourth_keyboard_user():
+    keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
+    button_8 = telebot.types.KeyboardButton('Самовывоз')
+    button_9 = telebot.types.KeyboardButton('Заказ курьера')
+    back_botton = create_back_buttom()
+    keyboard.add(button_8, button_9)
+    keyboard.row(back_botton)
+
+    return keyboard
+
+

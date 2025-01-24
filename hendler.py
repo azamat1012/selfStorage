@@ -1,10 +1,22 @@
+import os
 import telebot
+from telebot.handler_backends import State, StatesGroup
+from telebot.storage import StateMemoryStorage
 from inline_keyboards import (create_consent_keyboard,
                               create_my_order_keyboard,
                               create_box_info_keyboards)
 
 from standart_keyboards import (create_first_keyboard_user,
-                                create_second_keyboard_user,)
+                                create_second_keyboard_user,
+                                create_third_keyboard_user,
+                                create_fourth_keyboard_user,)
+
+
+state_storage = StateMemoryStorage
+
+
+class UserStates(StatesGroup):
+    enter_address = State()
 
 
 def read_price():
@@ -72,6 +84,54 @@ def handle_messages(bot: telebot.TeleBot):
             bot.send_message(message.chat.id,
                              'Выберите действие',
                              reply_markup=create_my_order_keyboard())
-        
+        elif message.text == 'Оформить заказ':
+            bot.send_message(message.chat.id,
+                             'Выберите бокс из доступных',
+                             reply_markup=create_third_keyboard_user())
+        elif message.text == 'Посмотреть доступные боксы':
+            bot.send_message(message.chat.id,
+                             'Выберите способ доставки',
+                             reply_markup=create_fourth_keyboard_user())
+        elif message.text == 'Самовывоз':
+            bot.send_message(message.chat.id,
+                             """Список доступных боксов:
+                                0. Бокс №0.
+                                1. Бокс №1.
+                                2. Бокс №2.    
+                             """)
+        elif message.text == 'Заказ курьера':
+            print("Заказ курьера активирован")
+            bot.set_state(message.from_user.id,
+                          UserStates.enter_address,
+                          message.chat.id)
+            print(f"Состояние пользователя {message.from_user.id} изменено на enter_address")  # Отладочный вывод
+            bot.send_message(
+                message.chat.id,
+                'Пожалуйста, введите ваш адрес для самовывоза'
+            )
 
+
+    @bot.message_handler(state=UserStates.enter_address)
+    def save_address(message):
+        address = message.text
+        print(f"Получен адрес: {address}")  # Отладочный вывод
+
+        if not os.path.exists("addresses.txt"):
+            print("Файл addresses.txt не найден, создаем новый")  # Отладочный вывод
+            with open("addresses.txt", "w", encoding="utf-8") as file:
+                file.write("")
+
+        with open("addresses.txt", "a", encoding="utf-8") as file:
+            file.write(f"Пользователь {message.from_user.id}: {address}\n")
+        print("Адрес сохранен в файл addresses.txt")  # Отладочный вывод
+
+        # Завершаем состояние
+        bot.delete_state(message.from_user.id, message.chat.id)
+        print(f"Состояние пользователя {message.from_user.id} завершено") 
+
+        # Отправляем подтверждение
+        bot.send_message(
+            message.chat.id,
+            f"Ваш адрес '{address}' сохранён. Спасибо!"
+        )
 
