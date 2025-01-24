@@ -14,11 +14,23 @@ from standart_keyboards import (create_first_keyboard_user,
                                 create_first_keyboard_owner,)
 
 
-state_storage = StateMemoryStorage
+# Создаем хранилище состояний
+state_storage = StateMemoryStorage()
+print("Создано хранилище состояний:", state_storage)  # Отладочный вывод
 
 
 class UserStates(StatesGroup):
-    enter_address = State()
+    enter_address = State()  # Состояние для ввода адреса
+
+
+# Функция для сохранения адреса в файл
+def save_to_file(user_id, address):
+    try:
+        with open('log_file.txt', 'a', encoding='utf-8') as file:
+            file.write(f'User ID: {user_id}, Address: {address}\n')
+        print("Адрес успешно сохранен в файл")  # Отладочный вывод
+    except Exception as e:
+        print(f"Ошибка при сохранении адреса: {e}")  # Отладочный вывод
 
 
 def read_price():
@@ -43,7 +55,7 @@ def hendle_start(bot: telebot.TeleBot):
                         )
 
 
-# Обработчик нажатий  инлайн-кнопки
+# Обработчик нажатий инлайн-кнопки
 def handle_callbacks(bot: telebot.TeleBot):
     @bot.callback_query_handler(func=lambda call: True)
     def handle_callback(call):
@@ -70,6 +82,7 @@ def handle_callbacks(bot: telebot.TeleBot):
 def handle_messages(bot: telebot.TeleBot):
     @bot.message_handler(func=lambda message: True)
     def handler_message(message):
+        print(f"Получено сообщение: {message.text}")  # Отладочный вывод
         if message.text == 'Заказать бокс для вещей':
             bot.send_message(message.chat.id,
                              'Спасибо, что выбрали нас.',
@@ -103,10 +116,9 @@ def handle_messages(bot: telebot.TeleBot):
                              """)
         elif message.text == 'Заказ курьера':
             print("Заказ курьера активирован")
-            bot.set_state(message.from_user.id,
-                          UserStates.enter_address,
-                          message.chat.id)
-            print(f"Состояние пользователя {message.from_user.id} изменено на enter_address")  # Отладочный вывод
+            # Устанавливаем состояние для ввода адреса
+            bot.set_state(message.from_user.id, UserStates.enter_address, message.chat.id)
+            print(f"Состояние пользователя {message.from_user.id} изменено на enter_address")
             bot.send_message(
                 message.chat.id,
                 'Пожалуйста, введите ваш адрес для самовывоза'
@@ -121,27 +133,22 @@ def handle_messages(bot: telebot.TeleBot):
                              reply_markup=create_statictic_info())    
 
 
+    # Обработчик для состояния ввода адреса
     @bot.message_handler(state=UserStates.enter_address)
     def save_address(message):
+        print("Обработка состояния: enter_address")  # Отладочный вывод
         address = message.text
         print(f"Получен адрес: {address}")  # Отладочный вывод
 
-        if not os.path.exists("addresses.txt"):
-            print("Файл addresses.txt не найден, создаем новый")  # Отладочный вывод
-            with open("addresses.txt", "w", encoding="utf-8") as file:
-                file.write("")
-
-        with open("addresses.txt", "a", encoding="utf-8") as file:
-            file.write(f"Пользователь {message.from_user.id}: {address}\n")
-        print("Адрес сохранен в файл addresses.txt")  # Отладочный вывод
+        # Сохраняем адрес в файл
+        save_to_file(message.from_user.id, address)
 
         # Завершаем состояние
         bot.delete_state(message.from_user.id, message.chat.id)
-        print(f"Состояние пользователя {message.from_user.id} завершено") 
+        print(f"Состояние пользователя {message.from_user.id} завершено")  # Отладочный вывод
 
         # Отправляем подтверждение
         bot.send_message(
             message.chat.id,
             f"Ваш адрес '{address}' сохранён. Спасибо!"
         )
-
