@@ -26,3 +26,13 @@ def create_second_keyboard_user():
     keyboard.row(back_botton)
 
     return keyboard
+
+    
+def create_third_keyboard_user():
+    keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
+    button_7 = telebot.types.KeyboardButton('Посмотреть доступные боксы')
+    back_botton = create_back_buttom()
+    keyboard.row(button_7)
+    keyboard.row(back_botton)
+
+    return keyboard
