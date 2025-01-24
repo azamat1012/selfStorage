@@ -46,3 +46,17 @@ def create_consent_keyboard():
     return keyboard
 
 
+def create_statictic_info():
+    keyboard = telebot.types.InlineKeyboardMarkup()
+    deal_button = telebot.types.InlineKeyboardButton(
+        'Статистика по завершенным заказам',
+        callback_data='deal_info'
+    )
+    box_info_button = telebot.types.InlineKeyboardButton(
+        'Колличество заказов по боксам',
+        callback_data='box_info'
+    )
+    keyboard.add(deal_button)
+    keyboard.add(box_info_button)
+
+    return keyboard

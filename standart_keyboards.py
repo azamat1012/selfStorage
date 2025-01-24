@@ -8,7 +8,7 @@ def create_back_buttom():
 def create_first_keyboard_user():
     keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
     button_1 = telebot.types.KeyboardButton("Заказать бокс для вещей")
-    button_2 = telebot.types.KeyboardButton("Я владелец.")
+    button_2 = telebot.types.KeyboardButton("Я владелец")
 
     keyboard.row(button_1, button_2)
     return keyboard
@@ -48,4 +48,10 @@ def create_fourth_keyboard_user():
 
     return keyboard
 
+def create_first_keyboard_owner():
+    keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
+    button_1 = telebot.types.KeyboardButton('Статистика')
+    button_2 = telebot.types.KeyboardButton('Создать бокс')
 
+    keyboard.add(button_1, button_2)
+    return keyboard

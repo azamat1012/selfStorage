@@ -4,12 +4,14 @@ from telebot.handler_backends import State, StatesGroup
 from telebot.storage import StateMemoryStorage
 from inline_keyboards import (create_consent_keyboard,
                               create_my_order_keyboard,
-                              create_box_info_keyboards)
+                              create_box_info_keyboards,
+                              create_statictic_info,)
 
 from standart_keyboards import (create_first_keyboard_user,
                                 create_second_keyboard_user,
                                 create_third_keyboard_user,
-                                create_fourth_keyboard_user,)
+                                create_fourth_keyboard_user,
+                                create_first_keyboard_owner,)
 
 
 state_storage = StateMemoryStorage
@@ -109,6 +111,14 @@ def handle_messages(bot: telebot.TeleBot):
                 message.chat.id,
                 'Пожалуйста, введите ваш адрес для самовывоза'
             )
+        elif message.text == 'Я владелец':
+            bot.send_message(message.chat.id,
+                             'Выбирайте нужный пункт',
+                             reply_markup=create_first_keyboard_owner())
+        elif message.text == 'Статистика':
+            bot.send_message(message.chat.id,
+                             'Сейчас будет важная статистика',
+                             reply_markup=create_statictic_info())    
 
 
     @bot.message_handler(state=UserStates.enter_address)
