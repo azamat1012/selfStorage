@@ -1,11 +1,12 @@
 import os
 import sys
-import django
 from pathlib import Path
 from dotenv import load_dotenv
+import django
 import telebot
 
-# Настройка джанго
+
+# Setup Django settings
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(str(BASE_DIR))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "frontend.settings")
