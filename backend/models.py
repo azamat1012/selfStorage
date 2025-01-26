@@ -28,7 +28,6 @@ class StorageBox(models.Model):
 
 
 class StorageUser(models.Model):
-
     ROLE_CHOICES = [
         ('customer', "Клиент"),
         ('staff', "Работник"),
@@ -48,7 +47,6 @@ class StorageUser(models.Model):
 
 
 class Order(models.Model):
-
     STATUS_CHOICES = [
         ('Обработывается', "Обработывается"),
         ('На складе', "На складе"),
