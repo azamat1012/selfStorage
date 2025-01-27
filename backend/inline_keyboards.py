@@ -23,8 +23,13 @@ def create_box_info_keyboards():
         'Название бокса',
         callback_data='box_name'
     )
+    box_end = InlineKeyboardButton(
+        'Забрать вещи',
+        callback_data='box_end'
+    )
     keyboard.add(storage_period_button)
     keyboard.add(box_name_button)
+    keyboard.add(box_end)
     return keyboard
 
 
@@ -84,4 +89,19 @@ def go_back():
         callback_data='back'
     )
     keyboard.add(button)
+    return keyboard
+
+
+def show_details():
+    keyboard = InlineKeyboardMarkup()
+    button = InlineKeyboardButton("Подробнее", callback_data='details')
+    keyboard.add(button)
+    return keyboard
+
+
+def show_details_2():
+    keyboard = InlineKeyboardMarkup()
+    button1 = InlineKeyboardButton("Все заказы", callback_data='all_orders')
+    button2 = InlineKeyboardButton("Просроченные", callback_data='end_orders')
+    keyboard.add(button1, button2)
     return keyboard
