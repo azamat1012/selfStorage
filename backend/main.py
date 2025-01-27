@@ -13,8 +13,10 @@ django.setup()
 
 try:
     from backend.handlers import handle_start, handle_callbacks, handle_messages
+    from backend.notify import notify_users
 except ImportError as e:
     print(e)
+
 
 def main():
     load_dotenv()
@@ -23,10 +25,13 @@ def main():
     handle_start(bot)
     handle_messages(bot)
     handle_callbacks(bot)
+    notify_users()
     try:
         bot.polling()
     except Exception as e:
         print(e)
 
+
 if __name__ == "__main__":
     main()
+
