@@ -18,7 +18,8 @@ class StorageBox(models.Model):
     location = models.CharField(
         max_length=150, verbose_name="Адрес", null=True)
     available_from = models.DateTimeField(verbose_name="Свободен с ")
-    available_till = models.DateTimeField(verbose_name="Свободен до")
+    available_till = models.DateTimeField(
+        verbose_name="Свободен до", null=True)
 
     def __str__(self):
         return self.name
@@ -32,11 +33,9 @@ class StorageUser(models.Model):
         ('customer', "Клиент"),
         ('staff', "Работник"),
     ]
-
     tg_id = models.CharField(max_length=60, unique=True,
                              verbose_name="Телеграм id", null=True)
     property = models.ManyToManyField(StorageBox, related_name="owners")
-
     name = models.CharField(max_length=50, null=True, verbose_name="Имя")
     number = models.IntegerField(verbose_name='Номер', null=True)
     role = models.CharField(
@@ -48,7 +47,7 @@ class StorageUser(models.Model):
 
 class Order(models.Model):
     STATUS_CHOICES = [
-        ('Обработывается', "Обработывается"),
+        ('Обрабатывается', "Обрабатывается"),
         ('На складе', "На складе"),
         ('Завершен', "Завершен"),
         ('Задержка', "Задержка"),
@@ -59,24 +58,24 @@ class Order(models.Model):
     box = models.ForeignKey(StorageBox, on_delete=models.CASCADE,
                             related_name="orders", verbose_name="Склад", null=True)
     status = models.CharField(
-        max_length=15, choices=STATUS_CHOICES, default='Обработывается', verbose_name="Статус", null=True)
+        max_length=15, choices=STATUS_CHOICES, default='Обрабатывается', verbose_name="Статус", null=True)
     items_description = models.TextField(
         verbose_name="Описание вещей", null=True)
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name="Создано")
     updated_at = models.DateTimeField(
         auto_now=True, verbose_name="Исправлено")
+    rental_start_date = models.DateTimeField(
+        verbose_name="Начало аренды", auto_now_add=True, null=True)
+    rental_end_date = models.DateTimeField(
+        verbose_name="Окончание аренды", null=True, blank=True)
+    is_notified = models.BooleanField(default=False, verbose_name="Уведомлен")
 
     def __str__(self):
         return f"Order #{self.id} by {self.user}"
 
 
 class Delivery(models.Model):
-    DELIVERY_CHOICES = [
-        ('delivery_курьером', 'Заказ курьер'),
-        ('delivery_самовывозом', 'Самовывоз')
-
-    ]
     order = models.OneToOneField(
         Order, on_delete=models.CASCADE, related_name="delivery", verbose_name="Заказ")
 
@@ -86,9 +85,6 @@ class Delivery(models.Model):
         max_length=20, verbose_name="Контактный номер")
     scheduled_at = models.DateTimeField(
         verbose_name="Назначенная дата")
-    delivery_method = models.CharField(max_length=30, choices=DELIVERY_CHOICES,
-                                       default='delivery_самовывозом', verbose_name="Метод получения", null=True)
-
     completed = models.BooleanField(
         default=False, verbose_name="Завершено", null=True)
 
