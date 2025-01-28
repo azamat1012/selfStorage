@@ -223,13 +223,13 @@ def handle_callbacks(bot: telebot.TeleBot):
                     for order in orders:
                         order_details.append(
                             f"Заказ #{order.id}:\n"
-                            f"Клиент: {order.user.name} (ID: {
-                                order.user.tg_id})\n"
+                            f"""Клиент: {order.user.name} (ID: {
+                                order.user.tg_id})\n"""
                             f"Склад: {order.box.name}\n"
                             f"Статус: {order.status}\n"
                             f"Описание вещей: {order.items_description}\n"
-                            f"Закончился: {
-                                order.rental_end_date.strftime('%d.%m.%Y %H:%M')}\n"
+                            f"""Закончился: {
+                                order.rental_end_date.strftime('%d.%m.%Y %H:%M')}\n"""
                             f"""Доступен с: {
                                 order.box.available_from.strftime('%d.%m.%Y %H:%M')}\n"""
                             "-----------------------------------"
@@ -332,8 +332,8 @@ def handle_messages(bot: telebot.TeleBot):
                         f"Заказ ID: {delivery.order.id}\n"
                         f"Адрес получения: {delivery.pickup_address}\n"
                         f"Контактный номер: {delivery.contact_number}\n"
-                        f"Назначенная дата: {
-                            delivery.scheduled_at.strftime('%d.%m.%Y %H:%M')}"
+                        f"""Назначенная дата: {
+                            delivery.scheduled_at.strftime('%d.%m.%Y %H:%M')}"""
                         for delivery in deliveries
                     ]
                 )
@@ -415,8 +415,8 @@ def process_date(message, bot):
         bot.send_message(
             chat_id,
             f"Извините, выбранный период аренды выходит за пределы доступного времени для этого бокса. "
-            f"Максимально доступный срок аренды: {(
-                chosen_box.available_till - now).days} дней. Пожалуйста, выберите более короткий срок."
+            f"""Максимально доступный срок аренды: {(
+                chosen_box.available_till - now).days} дней. Пожалуйста, выберите более короткий срок."""
         )
         bot.register_next_step_handler(message, process_date, bot)
         return
@@ -527,8 +527,8 @@ def confirm_booking(message, bot):
             user=client,
             box=chosen_box,
             status='Обрабатывается',
-            items_description=f"Заказ от <<{user_data[chat_id]['client_name']}>> на бокс <<{
-                chosen_box.name}>> с доставкой <<{delivery_method}>> по адресу <<{client_address}>>",
+            items_description=f"""Заказ от <<{user_data[chat_id]['client_name']}>> на бокс <<{
+                chosen_box.name}>> с доставкой <<{delivery_method}>> по адресу <<{client_address}>>""",
             rental_end_date=rental_date
         )
 
