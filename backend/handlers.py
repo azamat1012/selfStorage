@@ -120,8 +120,8 @@ def handle_callbacks(bot: telebot.TeleBot):
                     bot.send_photo(
                         chat_id,
                         photo=open(f"{current_dir}/qr_code.png", 'rb'),
-                        caption=f"Так быстро ??? Ваш заказ на бокс '{
-                            storage_box.name}' завершен. Можете забрать по QR-коду"
+                        caption=f"""Так быстро ??? Ваш заказ на бокс '{
+                            storage_box.name}' завершен. Можете забрать по QR-коду"""
                     )
                 else:
                     send_message("У вас нет активных заказов.", go_back())
@@ -230,8 +230,8 @@ def handle_callbacks(bot: telebot.TeleBot):
                             f"Описание вещей: {order.items_description}\n"
                             f"Закончился: {
                                 order.rental_end_date.strftime('%d.%m.%Y %H:%M')}\n"
-                            f"Доступен с: {
-                                order.box.available_from.strftime('%d.%m.%Y %H:%M')}\n"
+                            f"""Доступен с: {
+                                order.box.available_from.strftime('%d.%m.%Y %H:%M')}\n"""
                             "-----------------------------------"
                         )
                     send_message("\n\n".join(order_details))
@@ -314,8 +314,8 @@ def handle_messages(bot: telebot.TeleBot):
             if boxes.exists():
                 box_list = "\n".join(
                     [f"{box.name} (ID: {box.id})" for box in boxes])
-                bot.send_message(message.chat.id, f"Ваши боксы:\n{
-                                 box_list}", reply_markup=delivery_keybaord())
+                bot.send_message(message.chat.id, f"""Ваши боксы:\n{
+                                 box_list}""", reply_markup=delivery_keybaord())
             else:
                 bot.send_message(
                     message.chat.id, "У вас нет зарегистрированных боксов.", reply_markup=delivery_keybaord())
