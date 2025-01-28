@@ -277,27 +277,31 @@ def handle_messages(bot: telebot.TeleBot):
             )
         elif message.text == 'Оформить заказ':
             boxes = StorageBox.objects.all()
-            box_info = []
-            for box in boxes:
-                time_from = box.available_from.strftime("%d.%m.%Y")
-                time_till = box.available_till.strftime("%d.%m.%Y")
-                box_details = f"Бокс: {box.name}\n\n"
-
-                box_details += f"Описание: {box.description}\n\n"
-                box_details += f"Цена: {box.price} руб.\n\n"
-                box_details += f"Площадь: {box.volume}\n\n"
-                box_details += f"""Время работы: {
-                    time_from} - {time_till} \n\n"""
-                box_details += f"Адрес: {box.location} \n\n"
-                box_info.append(box_details)
-
-            box_info_message = "Доступные боксы:\n\n" + "\n".join(box_info)
-            bot.send_message(message.chat.id, box_info_message)
-            bot.send_message(
-                message.chat.id,
-                'Выберите бокс из доступных',
-                reply_markup=create_available_boxes_keyboard()
-            )
+            if boxes:
+                box_info = []
+                for box in boxes:
+                    time_from = box.available_from.strftime("%d.%m.%Y")
+                    time_till = box.available_till.strftime("%d.%m.%Y")
+                    box_details = f"Бокс: {box.name}\n\n"
+    
+                    box_details += f"Описание: {box.description}\n\n"
+                    box_details += f"Цена: {box.price} руб.\n\n"
+                    box_details += f"Площадь: {box.volume}\n\n"
+                    box_details += f"""Время работы: {
+                        time_from} - {time_till} \n\n"""
+                    box_details += f"Адрес: {box.location} \n\n"
+                    box_info.append(box_details)
+    
+                box_info_message = "Доступные боксы:\n\n" + "\n".join(box_info)
+                bot.send_message(message.chat.id, box_info_message)
+                bot.send_message(
+                    message.chat.id,
+                    'Выберите бокс из доступных',
+                    reply_markup=create_available_boxes_keyboard()
+                )
+            else:
+                bot.send_message(
+                    message.chat.id, "На данный момент доступных боксов нет.")
 
         elif message.text == "Просмотреть заказы":
             boxes = client.property.all()
